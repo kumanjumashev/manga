@@ -16,45 +16,75 @@
         <div class="row">
             <div class="col-12">
                 <div class="manga-grid">
-                    <!-- Manga covers will go here -->
+                    <!-- Manga covers will be inserted here -->
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        fetch('navbar.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navbar').innerHTML = data;
-            });
-            const mangaCovers = [
-        'pages/page1.jpg',
-        'pages/page2.jpg',
-        'pages/page3.jpg',
-        'pages/page4.jpg',
-        // Add more cover images as needed
-    ];
+        const mangaList = [
+    { title: 'Manga 1', cover: 'pages/page1.jpg' },
+    { title: 'Manga 2', cover: 'pages/page2.jpg' },
+    { title: 'Manga 3', cover: 'pages/page3.jpg' },
+    { title: 'Manga 4', cover: 'pages/page4.jpg' },
+    // Add more manga objects as needed
+];
 
+// Function to generate manga grid
+function generateMangaGrid() {
     const mangaGrid = document.querySelector('.manga-grid');
 
-    mangaCovers.forEach(cover => {
+    mangaList.forEach(manga => {
         const mangaItem = document.createElement('div');
-        mangaItem.className = 'manga-item col-6 col-sm-4 col-md-3 col-lg-3';
+        mangaItem.className = 'manga-item col-6 col-sm-3 col-md-3 col-lg-3';
+        mangaItem.setAttribute('data-manga-title', manga.title);
         
         const link = document.createElement('a');
-        link.href = 'details.html';
+        link.href = `details.html?manga=${encodeURIComponent(manga.title)}`;
         link.className = 'manga-cover-button';
         
         const img = document.createElement('img');
-        img.src = cover;
-        img.alt = 'Manga Cover';
+        img.src = manga.cover;
+        img.alt = `${manga.title} Cover`;
         img.className = 'shadow img-fluid';
         
         link.appendChild(img);
         mangaItem.appendChild(link);
         mangaGrid.appendChild(mangaItem);
     });
-    </script>
+}
+
+// Function to display saved progress
+function displaySavedProgress() {
+    const mangaItems = document.querySelectorAll('.manga-item');
+    mangaItems.forEach(item => {
+        const mangaTitle = item.dataset.mangaTitle;
+        const savedPage = localStorage.getItem(`${mangaTitle}_currentPage`);
+        if (savedPage !== null) {
+            const progressElement = document.createElement('div');
+            progressElement.className = 'manga-progress';
+            progressElement.textContent = `Progress: Page ${parseInt(savedPage) + 1}`;
+            item.appendChild(progressElement);
+        }
+    });
+}
+
+// Function to initialize the page
+function initPage() {
+    generateMangaGrid();
+    displaySavedProgress();
+}
+
+// Call initPage when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', initPage);
+
+// Load navbar
+fetch('navbar.html')
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('navbar').innerHTML = data;
+    });
+</script>
 </body>
 </html>

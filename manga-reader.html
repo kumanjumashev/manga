@@ -34,8 +34,17 @@
             const pages = [
                 'pages/page1.jpg',
                 'pages/page2.jpg',
-                'pages/page3.jpg'
+                'pages/page3.jpg',
+                'pages/page4.jpg',
+                'pages/page5.jpg',
+                'pages/page6.jpg',
+                'pages/page7.jpg',
+                'pages/page8.jpg',
+                'pages/page9.jpg'
+
             ];
+
+            const mangaTitle = 'Manga 1';
 
             let currentPage = 0;
 
@@ -49,13 +58,24 @@
                 imgElement.classList.add('loading');
                 imgElement.src = pages[currentPage];
                 pageDropdown.value = currentPage;
+                
+                // Save current page to localStorage
+                localStorage.setItem(`${mangaTitle}_currentPage`, currentPage);
+            }
+
+            function loadSavedPage() {
+                const savedPage = localStorage.getItem(`${mangaTitle}_currentPage`);
+                if (savedPage !== null) {
+                    currentPage = parseInt(savedPage);
+                    updatePage();
+                }
             }
 
             function populateDropdown() {
                 for (let i = 0; i < pages.length; i++) {
                     const option = document.createElement('option');
                     option.value = i;
-                    option.textContent = `${i + 1} - Бет`;
+                    option.textContent = `Page ${i + 1}`;
                     pageDropdown.appendChild(option);
                 }
             }
@@ -98,7 +118,9 @@
                 }
             });
 
+            // Initialize the page
             populateDropdown();
+            loadSavedPage();
             updatePage();
     </script>
 </body>
