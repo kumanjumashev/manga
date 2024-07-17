@@ -12,16 +12,18 @@
 <body>
     <!-- Include the navbar -->
     <div id="navbar"></div>
-
     <div class="reader">
         <div class="loader"></div>
         <img id="manga-page" src="pages/page1.jpg" alt="Manga Page">
         <div class="controls">
-            <div class="control" id="prev" style="left: 0;">&#9664;</div>
-            <div class="control" id="next" style="right: 0;">&#9654;</div>
+          <div class="control" id="prev" style="left: 0;">&#9664;</div>
+          <div class="control" id="next" style="right: 0;">&#9654;</div>
         </div>
     </div>
-
+    <div class="page-selector">
+        <select id="page-dropdown"></select>
+    </div>
+      
     <script>
         fetch('navbar.html')
             .then(response => response.text())
@@ -29,58 +31,75 @@
                 document.getElementById('navbar').innerHTML = data;
             });
 
-        const pages = [
-            'pages/page1.jpg',
-            'pages/page2.jpg',
-            'pages/page3.jpg'
-        ];
+            const pages = [
+                'pages/page1.jpg',
+                'pages/page2.jpg',
+                'pages/page3.jpg'
+            ];
 
-        let currentPage = 0;
+            let currentPage = 0;
 
-        const imgElement = document.getElementById('manga-page');
-        const prevButton = document.getElementById('prev');
-        const nextButton = document.getElementById('next');
+            const imgElement = document.getElementById('manga-page');
+            const prevButton = document.getElementById('prev');
+            const nextButton = document.getElementById('next');
+            const pageDropdown = document.getElementById('page-dropdown');
 
-        function updatePage() {
-            document.querySelector('.reader').classList.add('loading');
-            imgElement.classList.add('loading');
-            imgElement.src = pages[currentPage];
-        }
-
-        imgElement.onload = function () {
-            document.querySelector('.reader').classList.remove('loading');
-            imgElement.classList.remove('loading');
-        };
-
-        prevButton.addEventListener('click', () => {
-            if (currentPage > 0) {
-                currentPage--;
-                updatePage();
+            function updatePage() {
+                document.querySelector('.reader').classList.add('loading');
+                imgElement.classList.add('loading');
+                imgElement.src = pages[currentPage];
+                pageDropdown.value = currentPage;
             }
-        });
 
-        nextButton.addEventListener('click', () => {
-            if (currentPage < pages.length - 1) {
-                currentPage++;
-                updatePage();
+            function populateDropdown() {
+                for (let i = 0; i < pages.length; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = `${i + 1} - Бет`;
+                    pageDropdown.appendChild(option);
+                }
             }
-        });
 
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'ArrowLeft') {
+            imgElement.onload = function () {
+                document.querySelector('.reader').classList.remove('loading');
+                imgElement.classList.remove('loading');
+            };
+
+            prevButton.addEventListener('click', () => {
                 if (currentPage > 0) {
                     currentPage--;
                     updatePage();
                 }
-            } else if (event.key === 'ArrowRight') {
+            });
+
+            nextButton.addEventListener('click', () => {
                 if (currentPage < pages.length - 1) {
                     currentPage++;
                     updatePage();
                 }
-            }
-        });
+            });
 
-        updatePage();
+            pageDropdown.addEventListener('change', (event) => {
+                currentPage = parseInt(event.target.value);
+                updatePage();
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'ArrowLeft') {
+                    if (currentPage > 0) {
+                        currentPage--;
+                        updatePage();
+                    }
+                } else if (event.key === 'ArrowRight') {
+                    if (currentPage < pages.length - 1) {
+                        currentPage++;
+                        updatePage();
+                    }
+                }
+            });
+
+            populateDropdown();
+            updatePage();
     </script>
 </body>
 </html>
