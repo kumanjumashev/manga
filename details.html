@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Manga Reader</title>
+
+    <!-- css files -->
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Include the navbar -->
+    <div id="navbar"></div>
+
+    <script>
+        fetch('navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar').innerHTML = data;
+            });
+    </script>
+
+    <!-- start reading intro -->
+    <div class="container my-5">
+        <div class="read-intro bg-light">
+            <div class="row">
+                <div class="cover col-*">
+                    <img class="shadow" src="pages/page1.jpg" alt="">
+                </div>
+                <div class="info col">
+                    <h2 class="head">Тест</h2>
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Жанр:</th>
+                                <td>###</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Автор:</th>
+                                <td>###</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Акыркы бап:</th>
+                                <td>###</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>
+                        
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <a class="btn btn-red my-3 mx-1 px-5" href="manga-reader.html">Башынан окуу</a>
+            </div>
+        </div>
+    </div>
+    <!-- end reading intro -->
+
+    <!-- start intro lists -->
+    <div class="container my-5 bg-white">
+        <div class="intro-lists">
+            <div class="head-list row bg-light">
+                <ul class="list-unstyled list-inline">
+                    <li class="list-inline-item"><a data-toggle="tab" class="active" href="#ch">Баптар</a></li>
+                    <li class="list-inline-item"><a data-toggle="tab" href="#vol">Томдор</a></li>
+                    <li class="list-inline-item"><a data-toggle="tab" href="#related">Окшош манга</a></li>
+                </ul>
+            </div>
+            <div class="tab-content">
+
+                <!-- start ch -->
+                <div id="ch" class="tab-pane fade in active show">
+                    <div class="row">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th><a href="details.html">Бап 1: Амогус</a></th>
+                                </tr>
+                                <tr>
+                                    <th><a href="details.html">Бап 2: Амогус</a></th>
+                                </tr>
+                                <tr>
+                                    <th><a href="details.html">Бап 3: Амогус</a></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- end ch -->
+
+                <!-- start vol -->
+                <div id="vol" class="tab-pane fade">
+                    <div class="row">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th><a href="details.html">Том 1: Амогус</a></th>
+                                </tr>
+                                <tr>
+                                    <th><a href="details.html">Том 2: Амогус</a></th>
+                                </tr>
+                                <tr>
+                                    <th><a href="details.html">Том 3: Амогус</a></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- end vol -->
+
+                <!-- start related -->
+                <div id="related" class="tab-pane fade">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <a href="details.html">
+                                <div class="card mb-3">
+                                    <img src="img/cover2.jpg" class="card-img-top" alt="">
+                                    <div class="card-body">
+                                        <h5 class="card-title">One piece</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <a href="details.html">
+                                <div class="card mb-3">
+                                    <img src="img/cover2.jpg" class="card-img-top" alt="">
+                                    <div class="card-body">
+                                        <h5 class="card-title">One piece</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <a href="details.html">
+                                <div class="card mb-3">
+                                    <img src="img/cover2.jpg" class="card-img-top" alt="">
+                                    <div class="card-body">
+                                        <h5 class="card-title">One piece</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <a href="details.html">
+                                <div class="card mb-3">
+                                    <img src="img/cover2.jpg" class="card-img-top" alt="">
+                                    <div class="card-body">
+                                        <h5 class="card-title">One piece</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- end related -->
+
+            </div>
+        </div>
+    </div>
+    <!-- end sh. list -->
+
+    <!-- start footer -->
+    <footer>
+        <div class="container py-4">
+            <span class="copyright">Manga KG</span>
+            <span class="design float-right">Designed by ZFCon</span>
+        </div>
+    </footer>
+    <!-- end footer -->
+
+    <!-- js files -->
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
