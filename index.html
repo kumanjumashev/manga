@@ -7,21 +7,18 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="bootstrap.min.css">
-    <style>
-        .content {
-            padding: 20px;
-        }
-    </style>
 </head>
 <body>
     <!-- Include the navbar -->
     <div id="navbar"></div>
 
-    <div class="cover col-*">
-        <div class="content">
-            <a href="details.html" class="manga-cover-button">
-                <img class="shadow" src="pages/page1.jpg" alt="">
-              </a>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="manga-grid">
+                    <!-- Manga covers will go here -->
+                </div>
+            </div>
         </div>
     </div>
 
@@ -31,6 +28,33 @@
             .then(data => {
                 document.getElementById('navbar').innerHTML = data;
             });
+            const mangaCovers = [
+        'pages/page1.jpg',
+        'pages/page2.jpg',
+        'pages/page3.jpg',
+        'pages/page4.jpg',
+        // Add more cover images as needed
+    ];
+
+    const mangaGrid = document.querySelector('.manga-grid');
+
+    mangaCovers.forEach(cover => {
+        const mangaItem = document.createElement('div');
+        mangaItem.className = 'manga-item col-6 col-sm-4 col-md-3 col-lg-3';
+        
+        const link = document.createElement('a');
+        link.href = 'details.html';
+        link.className = 'manga-cover-button';
+        
+        const img = document.createElement('img');
+        img.src = cover;
+        img.alt = 'Manga Cover';
+        img.className = 'shadow img-fluid';
+        
+        link.appendChild(img);
+        mangaItem.appendChild(link);
+        mangaGrid.appendChild(mangaItem);
+    });
     </script>
 </body>
 </html>
