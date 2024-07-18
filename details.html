@@ -70,8 +70,6 @@
             <div class="head-list row bg-light">
                 <ul class="list-unstyled list-inline">
                     <li class="list-inline-item"><a data-toggle="tab" class="active" href="#ch">Баптар</a></li>
-                    <li class="list-inline-item"><a data-toggle="tab" href="#vol">Томдор</a></li>
-                    <li class="list-inline-item"><a data-toggle="tab" href="#related">Окшош манга</a></li>
                 </ul>
             </div>
             <div class="tab-content">
@@ -80,94 +78,16 @@
                 <div id="ch" class="tab-pane fade in active show">
                     <div class="row">
                         <table class="table table-striped">
-                            <tbody>
-                                <tr>
-                                    <th><a href="details.html">Бап 1: Амогус</a></th>
-                                </tr>
-                                <tr>
-                                    <th><a href="details.html">Бап 2: Амогус</a></th>
-                                </tr>
-                                <tr>
-                                    <th><a href="details.html">Бап 3: Амогус</a></th>
-                                </tr>
+                            <tbody class="chapter-grid">
+                                
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <!-- end ch -->
-
-                <!-- start vol -->
-                <div id="vol" class="tab-pane fade">
-                    <div class="row">
-                        <table class="table table-striped">
-                            <tbody>
-                                <tr>
-                                    <th><a href="details.html">Том 1: Амогус</a></th>
-                                </tr>
-                                <tr>
-                                    <th><a href="details.html">Том 2: Амогус</a></th>
-                                </tr>
-                                <tr>
-                                    <th><a href="details.html">Том 3: Амогус</a></th>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- end vol -->
-
-                <!-- start related -->
-                <div id="related" class="tab-pane fade">
-                    <div class="row">
-                        <div class="col-lg-3 col-md-4 col-sm-6">
-                            <a href="details.html">
-                                <div class="card mb-3">
-                                    <img src="img/cover2.jpg" class="card-img-top" alt="">
-                                    <div class="card-body">
-                                        <h5 class="card-title">One piece</h5>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-lg-3 col-md-4 col-sm-6">
-                            <a href="details.html">
-                                <div class="card mb-3">
-                                    <img src="img/cover2.jpg" class="card-img-top" alt="">
-                                    <div class="card-body">
-                                        <h5 class="card-title">One piece</h5>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-lg-3 col-md-4 col-sm-6">
-                            <a href="details.html">
-                                <div class="card mb-3">
-                                    <img src="img/cover2.jpg" class="card-img-top" alt="">
-                                    <div class="card-body">
-                                        <h5 class="card-title">One piece</h5>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-lg-3 col-md-4 col-sm-6">
-                            <a href="details.html">
-                                <div class="card mb-3">
-                                    <img src="img/cover2.jpg" class="card-img-top" alt="">
-                                    <div class="card-body">
-                                        <h5 class="card-title">One piece</h5>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- end related -->
-
             </div>
         </div>
     </div>
-    <!-- end sh. list -->
 
     <!-- start footer -->
     <footer>
@@ -185,14 +105,52 @@
         crossorigin="anonymous"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
+    <!-- End js files-->
     <script>
-        document.getElementById('startReading').addEventListener('click', function(e) {
+    /*Start reading button*/
+    document.getElementById('startReading').addEventListener('click', function(e) {
         e.preventDefault();
         localStorage.setItem('Manga 1_currentChapter', '0');
         localStorage.setItem('Manga 1_currentPage', '0');
         window.location.href = 'manga-reader.html';
     });
-    </script>
+
+    /*Dynamic chapters*/
+    const chaptersList = [
+        {chapterName: 'Амогус', chapterNumber: 1},
+        {chapterName: 'Сус', chapterNumber: 2},
+        // Add more chapters as needed
+    ];
+
+    function createChapterGrid(chapters) {
+        const chapterGrid = document.querySelector('.chapter-grid');
+        chapterGrid.innerHTML = ''; // Clear existing content
+
+        chapters.forEach(chapter => {
+            const row = document.createElement('tr');
+            const link = document.createElement('a');
+            link.href = `manga-reader.html?chapter=${chapter.chapterNumber}`;
+            link.textContent = `Бап ${chapter.chapterNumber}: ${chapter.chapterName}`;
+            
+            // Add click event listener to update localStorage
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const chapterIndex = chapter.chapterNumber - 1;
+                localStorage.setItem('Manga 1_currentChapter', chapterIndex.toString());
+                localStorage.setItem('Manga 1_currentPage', '0'); // Reset page to 0 for new chapter
+                window.location.href = this.href;
+            });
+
+            const th = document.createElement('th');
+            th.appendChild(link);
+            row.appendChild(th);
+            chapterGrid.appendChild(row);
+        });
+    }
+
+    // Call the function to create the grid
+    createChapterGrid(chaptersList);
+</script>
 </body>
 
 </html>
