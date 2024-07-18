@@ -14,13 +14,14 @@
     <div id="navbar"></div>
     <div class="reader">
         <div class="loader"></div>
-        <img id="manga-page" src="pages/page1.jpg" alt="Manga Page">
+        <img id="manga-page" src="pages/chapter1/page1.jpg" alt="Manga Page">
         <div class="controls">
           <div class="control" id="prev" style="left: 0;">&#9664;</div>
           <div class="control" id="next" style="right: 0;">&#9654;</div>
         </div>
     </div>
     <div class="page-selector">
+        <select id="chapter-dropdown"></select>
         <select id="page-dropdown"></select>
     </div>
       
@@ -31,53 +32,90 @@
                 document.getElementById('navbar').innerHTML = data;
             });
 
-            const pages = [
-                'pages/page1.jpg',
-                'pages/page2.jpg',
-                'pages/page3.jpg',
-                'pages/page4.jpg',
-                'pages/page5.jpg',
-                'pages/page6.jpg',
-                'pages/page7.jpg',
-                'pages/page8.jpg',
-                'pages/page9.jpg'
+            const mangaData = {
+                title: 'Manga 1',
+                chapters: [
+                    {
+                        title: 'Chapter 1',
+                        pages: [
+                            'pages/chapter1/page1.jpg',
+                            'pages/chapter1/page2.jpg',
+                            'pages/chapter1/page3.jpg',
+                        ]
+                    },
+                    {
+                        title: 'Chapter 2',
+                        pages: [
+                            'pages/chapter2/page4.jpg',
+                            'pages/chapter2/page5.jpg',
+                            'pages/chapter2/page6.jpg',
+                        ]
+                    },
+                    // Add more chapters as needed
+                ]
+            };
 
-            ];
-
-            const mangaTitle = 'Manga 1';
-
+            let currentChapter = 0;
             let currentPage = 0;
 
             const imgElement = document.getElementById('manga-page');
             const prevButton = document.getElementById('prev');
             const nextButton = document.getElementById('next');
             const pageDropdown = document.getElementById('page-dropdown');
+            const chapterDropdown = document.getElementById('chapter-dropdown');
 
             function updatePage() {
                 document.querySelector('.reader').classList.add('loading');
                 imgElement.classList.add('loading');
-                imgElement.src = pages[currentPage];
+                imgElement.src = mangaData.chapters[currentChapter].pages[currentPage];
                 pageDropdown.value = currentPage;
+                chapterDropdown.value = currentChapter;
                 
-                // Save current page to localStorage
-                localStorage.setItem(`${mangaTitle}_currentPage`, currentPage);
+                // Save current chapter and page to localStorage
+                localStorage.setItem(`${mangaData.title}_currentChapter`, currentChapter);
+                localStorage.setItem(`${mangaData.title}_currentPage`, currentPage);
             }
 
-            function loadSavedPage() {
-                const savedPage = localStorage.getItem(`${mangaTitle}_currentPage`);
-                if (savedPage !== null) {
+            function loadSavedProgress() {
+                const savedChapter = localStorage.getItem(`${mangaData.title}_currentChapter`);
+                const savedPage = localStorage.getItem(`${mangaData.title}_currentPage`);
+                if (savedChapter !== null && savedPage !== null) {
+                    currentChapter = parseInt(savedChapter);
                     currentPage = parseInt(savedPage);
-                    updatePage();
+                } else {
+                    currentChapter = 0;
+                    currentPage = 0;
                 }
+                updatePage();
             }
 
-            function populateDropdown() {
-                for (let i = 0; i < pages.length; i++) {
+            function populateDropdowns() {
+                // Populate chapter dropdown
+                mangaData.chapters.forEach((chapter, index) => {
                     const option = document.createElement('option');
-                    option.value = i;
-                    option.textContent = `Page ${i + 1}`;
-                    pageDropdown.appendChild(option);
+                    option.value = index;
+                    option.textContent = chapter.title;
+                    chapterDropdown.appendChild(option);
+                });
+
+                // Populate page dropdown
+                function updatePageDropdown() {
+                    pageDropdown.innerHTML = '';
+                    mangaData.chapters[currentChapter].pages.forEach((_, index) => {
+                        const option = document.createElement('option');
+                        option.value = index;
+                        option.textContent = `Page ${index + 1}`;
+                        pageDropdown.appendChild(option);
+                    });
                 }
+
+                updatePageDropdown();
+                chapterDropdown.addEventListener('change', (event) => {
+                    currentChapter = parseInt(event.target.value);
+                    currentPage = 0;
+                    updatePageDropdown();
+                    updatePage();
+                });
             }
 
             imgElement.onload = function () {
@@ -88,15 +126,21 @@
             prevButton.addEventListener('click', () => {
                 if (currentPage > 0) {
                     currentPage--;
-                    updatePage();
+                } else if (currentChapter > 0) {
+                    currentChapter--;
+                    currentPage = mangaData.chapters[currentChapter].pages.length - 1;
                 }
+                updatePage();
             });
 
             nextButton.addEventListener('click', () => {
-                if (currentPage < pages.length - 1) {
+                if (currentPage < mangaData.chapters[currentChapter].pages.length - 1) {
                     currentPage++;
-                    updatePage();
+                } else if (currentChapter < mangaData.chapters.length - 1) {
+                    currentChapter++;
+                    currentPage = 0;
                 }
+                updatePage();
             });
 
             pageDropdown.addEventListener('change', (event) => {
@@ -108,19 +152,25 @@
                 if (event.key === 'ArrowLeft') {
                     if (currentPage > 0) {
                         currentPage--;
-                        updatePage();
+                    } else if (currentChapter > 0) {
+                        currentChapter--;
+                        currentPage = mangaData.chapters[currentChapter].pages.length - 1;
                     }
+                    updatePage();
                 } else if (event.key === 'ArrowRight') {
-                    if (currentPage < pages.length - 1) {
+                    if (currentPage < mangaData.chapters[currentChapter].pages.length - 1) {
                         currentPage++;
-                        updatePage();
+                    } else if (currentChapter < mangaData.chapters.length - 1) {
+                        currentChapter++;
+                        currentPage = 0;
                     }
+                    updatePage();
                 }
             });
 
             // Initialize the page
-            populateDropdown();
-            loadSavedPage();
+            populateDropdowns();
+            loadSavedProgress();
             updatePage();
     </script>
 </body>

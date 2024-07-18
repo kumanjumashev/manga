@@ -29,7 +29,7 @@
         <div class="read-intro bg-light">
             <div class="row">
                 <div class="cover col-*">
-                    <img class="shadow" src="pages/page1.jpg" alt="">
+                    <img class="shadow" src="pages/chapter1/page1.jpg" alt="">
                 </div>
                 <div class="info col">
                     <h2 class="head">Тест</h2>
@@ -55,7 +55,10 @@
                 </div>
             </div>
             <div class="row">
-                <a class="btn btn-red my-3 mx-1 px-5" href="manga-reader.html">Башынан окуу</a>
+                <div class="button-container">
+                    <a class="btn btn-red manga-btn" href="manga-reader.html">Улантуу</a>
+                    <a id="startReading" class="btn btn-red manga-btn" href="manga-reader.html">Башынан окуу</a>
+                </div>
             </div>
         </div>
     </div>
@@ -182,6 +185,14 @@
         crossorigin="anonymous"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
+    <script>
+        document.getElementById('startReading').addEventListener('click', function(e) {
+        e.preventDefault();
+        localStorage.setItem('Manga 1_currentChapter', '0');
+        localStorage.setItem('Manga 1_currentPage', '0');
+        window.location.href = 'manga-reader.html';
+    });
+    </script>
 </body>
 
 </html>
